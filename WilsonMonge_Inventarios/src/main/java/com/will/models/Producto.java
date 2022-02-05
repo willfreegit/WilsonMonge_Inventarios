@@ -1,10 +1,9 @@
 package com.will.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Producto")
@@ -20,6 +19,8 @@ public class Producto {
     private BigDecimal price;
     @Column(name = "stock")
     private int stock;
+    @ManyToMany(mappedBy = "productos", fetch = FetchType.LAZY)
+    private Set<Tienda> tiendas = new HashSet<>();
 
     public long getId() {
         return id;
@@ -59,5 +60,13 @@ public class Producto {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public Set<Tienda> getTiendas() {
+        return tiendas;
+    }
+
+    public void setTiendas(Set<Tienda> tiendas) {
+        this.tiendas = tiendas;
     }
 }

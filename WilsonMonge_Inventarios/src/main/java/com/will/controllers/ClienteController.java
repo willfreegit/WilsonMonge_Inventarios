@@ -17,9 +17,9 @@ public class ClienteController {
 
     @GetMapping("/getCliente/{identificacion}")
     public ResponseEntity<Cliente> getCliente(@PathVariable("identificacion") String identificacion){
-        Optional<Cliente> cliente = clienteRepository.findById(identificacion);
-        if(cliente.isPresent()){
-            return new ResponseEntity<>(cliente.get(), HttpStatus.OK);
+        Optional<Cliente> cliente_optional = clienteRepository.findById(identificacion);
+        if(cliente_optional.isPresent()){
+            return new ResponseEntity<>(cliente_optional.get(), HttpStatus.OK);
         } else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -44,12 +44,12 @@ public class ClienteController {
         if(cliente.getNombre().isEmpty()){
             return new ResponseEntity<>("CAMPO NOMBRE OBLIGATORIO", HttpStatus.OK);
         } else {
-            Optional<Cliente> cliente_actual = clienteRepository.findById(identificacion);
-            if(cliente_actual.isPresent()){
-                Cliente cliente_nuevo = cliente_actual.get();
-                cliente_nuevo.setNombre(cliente.getNombre());
-                cliente_nuevo.setFoto(cliente.getFoto());
-                clienteRepository.save(cliente_nuevo);
+            Optional<Cliente> cliente_optional = clienteRepository.findById(identificacion);
+            if(cliente_optional.isPresent()){
+                Cliente cliente_update = cliente_optional.get();
+                cliente_update.setNombre(cliente.getNombre());
+                cliente_update.setFoto(cliente.getFoto());
+                clienteRepository.save(cliente_update);
                 return new ResponseEntity<>("CLIENTE ACTUALIZADO CORRECTAMENTE", HttpStatus.OK);
             } else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

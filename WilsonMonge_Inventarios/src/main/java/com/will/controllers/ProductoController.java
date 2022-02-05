@@ -25,14 +25,14 @@ public class ProductoController {
 
     @PutMapping("/updateStock/{id}/{cantidad}")
     public ResponseEntity<String> updateStock(@PathVariable("id") long id, @PathVariable int cantidad){
-        Optional<Producto> producto_actual = productoRepository.findById(id);
-            if(producto_actual.isPresent()){
-                Producto producto_nuevo = producto_actual.get();
-                if(producto_nuevo.getStock() <= 0){
+        Optional<Producto> producto_optional = productoRepository.findById(id);
+            if(producto_optional.isPresent()){
+                Producto producto_update = producto_optional.get();
+                if(producto_update.getStock() <= 0){
                     return new ResponseEntity<>("STOCK ACTUAL NO PUEDE SERE MENOR O IGUAL A CERO", HttpStatus.OK);
                 } else {
-                    producto_nuevo.setStock(cantidad);
-                    productoRepository.save(producto_nuevo);
+                    producto_update.setStock(cantidad);
+                    productoRepository.save(producto_update);
                     return new ResponseEntity<>("CLIENTE ACTUALIZADO CORRECTAMENTE", HttpStatus.OK);
                 }
             } else{
