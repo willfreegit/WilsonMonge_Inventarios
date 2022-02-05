@@ -44,9 +44,9 @@ public class ClienteController {
         if(cliente.getNombre().isEmpty()){
             return new ResponseEntity<>("CAMPO NOMBRE OBLIGATORIO", HttpStatus.OK);
         } else {
-            Optional<Cliente> cliente_original = clienteRepository.findById(identificacion);
-            if(cliente_original.isPresent()){
-                Cliente cliente_nuevo = cliente_original.get();
+            Optional<Cliente> cliente_actual = clienteRepository.findById(identificacion);
+            if(cliente_actual.isPresent()){
+                Cliente cliente_nuevo = cliente_actual.get();
                 cliente_nuevo.setNombre(cliente.getNombre());
                 cliente_nuevo.setFoto(cliente.getFoto());
                 clienteRepository.save(cliente_nuevo);
