@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Table(name = "Registro")
 public class Registro {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
     @Column(name = "id_producto")
@@ -81,4 +81,5 @@ public class Registro {
     public void setFecha(Timestamp fecha) {
         this.fecha = fecha;
     }
+
 }
