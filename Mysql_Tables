@@ -1,0 +1,34 @@
+CREATE TABLE `Cliente` (
+  `identificacion` varchar(20) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `foto` varchar(100) DEFAULT NULL
+)
+
+CREATE TABLE `Producto` (
+  `id` bigint(20) NOT NULL,
+  `cod` varchar(10) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `price` decimal(10,0) NOT NULL,
+  `stock` int(11) NOT NULL
+)
+
+CREATE TABLE `Registro` (
+  `id` bigint(20) NOT NULL,
+  `id_producto` bigint(20) NOT NULL,
+  `codigo_tienda` bigint(20) NOT NULL,
+  `id_cliente` varchar(20) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `valor` decimal(10,0) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+)
+
+CREATE TABLE `Tienda` (
+  `codigo` bigint(20) NOT NULL,
+  `nombre` varchar(50) NOT NULL
+)
+
+CREATE TABLE `TiendaProducto` (
+  `codigo` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL
+)
+
