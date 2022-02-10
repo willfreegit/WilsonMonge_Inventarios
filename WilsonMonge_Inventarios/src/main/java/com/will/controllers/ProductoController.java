@@ -24,7 +24,7 @@ public class ProductoController {
     }
 
     @PutMapping("/updateStock/{id}/{cantidad}")
-    public ResponseEntity<String> updateStock(@PathVariable("id") long id, @PathVariable int cantidad){
+    public ResponseEntity<String> updateStock(@PathVariable("id") long id, @PathVariable("cantidad") int cantidad){
         Optional<Producto> producto_optional = productoRepository.findById(id);
             if(producto_optional.isPresent()){
                 Producto producto_update = producto_optional.get();

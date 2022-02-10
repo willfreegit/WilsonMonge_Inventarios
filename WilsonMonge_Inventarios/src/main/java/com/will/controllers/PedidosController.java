@@ -5,6 +5,7 @@ import com.will.repository.ClienteRepository;
 import com.will.repository.ProductoRepository;
 import com.will.repository.RegistroRepository;
 import com.will.repository.TiendaRepository;
+import com.will.util.RestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +28,8 @@ public class PedidosController {
     TiendaRepository tiendaRepository;
     @Autowired
     RegistroRepository registroRepository;
+    @Autowired
+    RestHelper restHelper;
 
     @PostMapping("/addRegistro")
     public ResponseEntity<String> addRegistro(@RequestBody Pedido pedido) {
@@ -50,20 +51,18 @@ public class PedidosController {
                     return new ResponseEntity<>("UNIDADES NO DISPONIBLES (>10)", HttpStatus.OK);
                 }
                 if (validar_stock < -5 && validar_stock >= -10) {
-                    String fakeApi = "https://mocki.io/v1/a8434bde-4ce3-4359-94a6-151b281542d7";
-                    RestTemplate restTemplate = new RestTemplate();
-                    Stock stock = restTemplate.getForObject(fakeApi, Stock.class);
+                    Stock stock = restHelper.getStock();
                     if (stock != null) {
                         nuevo_stock = (producto.getStock() + stock.getStock()) - registro.getCantidad();
                     }
                 }
                 if (validar_stock < 0 && validar_stock >= 5) { //CAMBIAR A UN SERVICI ASYNC
-                    String fakeApi = "https://mocki.io/v1/cc5a03f3-72d5-4acc-8854-5ecd6df714ad";
-                    RestTemplate restTemplate = new RestTemplate();
-                    Stock stock = restTemplate.getForObject(fakeApi, Stock.class);
-                    if (stock != null) {
-                        nuevo_stock = (producto.getStock() + stock.getStock()) - registro.getCantidad();
+                    try{
+                        restHelper.getStockAsync();
+                    }catch (Exception ex){
+                        ex.printStackTrace();
                     }
+                    nuevo_stock = (producto.getStock() + 5) - registro.getCantidad();
                 }
                 producto.setStock(nuevo_stock);
                 productoRepository.save(producto);
